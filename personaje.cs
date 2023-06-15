@@ -1,9 +1,14 @@
 namespace protectoo
 {
-    class Personaje
+    public enum Tipo
+    {
+        personje1,
+        personaje2,
+    }
+    public class Personaje
     {
         // datos
-        private string tipo;
+        private Tipo tipo;
         private string nombre;
         private DateTime fechaNac;
         private string apodo;
@@ -17,7 +22,7 @@ namespace protectoo
         private int salud;    // 1 a 10
         private int armadura;  // 100
 
-        public string Tipo { get => tipo; set => tipo = value; }
+        
         public string Nombre { get => nombre; set => nombre = value; }
         public DateTime FechaNac { get => fechaNac; set => fechaNac = value; }
         public string Apodo { get => apodo; set => apodo = value; }
@@ -27,11 +32,7 @@ namespace protectoo
         public int Armadura { get => armadura; set => armadura = value; }
         public int Salud { get => salud; set => salud = value; }
         public int Destreza { get => destreza; set => destreza = value; }
-    }
-
-    class FabricaDePersonajes
-    {
-        
+        public Tipo Tipo { get => tipo; set => tipo = value; }
     }
 
 
