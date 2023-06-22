@@ -1,18 +1,32 @@
-namespace protectoo
+namespace Jugadores
 {
-    public enum Tipo
+
+    public class Constantes
     {
-        personje1,
-        personaje2,
+        //primer grupo
+        public static string[] nombres1 = {"Fibonacci","Euclides","Pythagoras","Archimedes","Pascal","Gauss",
+        "Newton","Hilbert","Turing","Fermat","Euler","Ramanujan","Descartes","Galois","Cantor","Bernoulli",
+        "Laplace","Leibniz","Mobius"};
+        //segundo grupo
+        public static string[] nombres2 = {"Curie","Mendeleev","Lavoisier","Boyle","Franklin","Haber","Seaborg",
+        "Arrhenius","Elion","Calvin","Modrich","Domagk","Hodgkin","Urey","Olah","Dalton","Rutherford","Avogadro","Faraday","Pasteur"};
+        public static string[] tipo = { "Matematico","Quimico" };
+
     }
+
     public class Personaje
     {
+        //constantes dentro de la clase
+        //private static string[]nombres ={"pedro", "juan"}; //ejemplo profe
+
+
         // datos
-        private Tipo tipo;
-        private string nombre;
+        private string? tipo;
+        private string? nombre;
         private DateTime fechaNac;
-        private string apodo;
+        private string? apodo;
         private int edad; //entre 0 y 300
+        public static int prueba;
 
         //caracteristicas
         private int velocidad; // 1 a 10
@@ -22,7 +36,7 @@ namespace protectoo
         private int salud;    // 1 a 10
         private int armadura;  // 100
 
-        
+
         public string Nombre { get => nombre; set => nombre = value; }
         public DateTime FechaNac { get => fechaNac; set => fechaNac = value; }
         public string Apodo { get => apodo; set => apodo = value; }
@@ -32,7 +46,9 @@ namespace protectoo
         public int Armadura { get => armadura; set => armadura = value; }
         public int Salud { get => salud; set => salud = value; }
         public int Destreza { get => destreza; set => destreza = value; }
-        public Tipo Tipo { get => tipo; set => tipo = value; }
+        public string? Tipo { get => tipo; set => tipo = value; }
+        public int Nivel { get => nivel; set => nivel = value; }
+        //public static int Prueba { get => prueba; set => prueba = value; }
     }
 
 
