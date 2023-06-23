@@ -9,9 +9,10 @@ namespace Fabrica
         public static Personaje crearPersonaje() //metodo
         {
             var NuevoPersonaje = new Personaje();
-            NuevoPersonaje.Nombre = Constantes.nombres1[NumeroAleatorio(0,20)];
+            NuevoPersonaje.Nombre = Constantes.nombres1[NumeroAleatorio(0,19)];
             NuevoPersonaje.Tipo = Constantes.tipo[NumeroAleatorio(0,2)];
-            NuevoPersonaje.Edad= NumeroAleatorio(0,301);
+            NuevoPersonaje.FechaNac = new DateTime(NumeroAleatorio(1723,2024),NumeroAleatorio(1,13),NumeroAleatorio(1,31));
+            NuevoPersonaje.Edad= edad(NuevoPersonaje.FechaNac.Year);
             NuevoPersonaje.Fuerza= NumeroAleatorio(1,11);
             NuevoPersonaje.Armadura=NumeroAleatorio(1,11);
             NuevoPersonaje.Destreza = NumeroAleatorio(1,6);
@@ -26,6 +27,12 @@ namespace Fabrica
             Random ValorAletorio = new Random();
             return (ValorAletorio.Next(a,b));
         }
+        public static int edad (int anioNac)
+        {
+            int anioActual = DateTime.Now.Year;
+
+            return (anioActual-anioNac);
+        } 
 
 
 
