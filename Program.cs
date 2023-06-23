@@ -17,10 +17,11 @@ internal class Program
                 var NewPersonaje = FabricaDePersonajes.crearPersonaje();
                 ListaPersonajes.Add(NewPersonaje);
             }
-            PersonajesJson.GuardarPersonajes(ListaPersonajes,NombreJson);
+            PersonajesJson.GuardarPersonajes(ListaPersonajes,NombreJson);//guardo la lista en .json
         }else {
             ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson);
         }
+        ListaPersonajes[3].Fuerza = -1;
         MostrarPersonajes(ListaPersonajes);
         
     }
@@ -32,12 +33,15 @@ internal class Program
         {
             Console.WriteLine("Nombre: " + personaje.Nombre);
             Console.WriteLine("Edad: " + personaje.Edad);
+            Console.WriteLine("Fecha de nacimiento: " + personaje.FechaNac.Day +"\\" + personaje.FechaNac.Month +"\\"+personaje.FechaNac.Year);
             Console.WriteLine("Tipo: " + personaje.Tipo);
             Console.WriteLine("Destreza: " + personaje.Destreza);
             Console.WriteLine("Armadura"+ personaje.Armadura);
             Console.WriteLine("Nivel: " + personaje.Nivel);
             Console.WriteLine("Salud: " + personaje.Salud);
+            Console.WriteLine("Fuerza: " + personaje.Fuerza);
             Console.WriteLine("Velocidad: "+personaje.Velocidad + "\n");
+
         }
 
     }
