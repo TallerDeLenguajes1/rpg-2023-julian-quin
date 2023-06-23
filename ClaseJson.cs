@@ -21,7 +21,7 @@ namespace Json
             var listado = new List<Personaje>();
             string JsonAtexto = File.ReadAllText(nombreArchivo);
             listado = JsonSerializer.Deserialize<List<Personaje>>(JsonAtexto);
-            return listado;
+            return listado; // retorno la lista recuperada
         }
 
         //Crear un método llamado Existe que reciba un nombre de archivo y que retorne un

@@ -16,9 +16,6 @@ namespace Jugadores
 
     public class Personaje
     {
-        //constantes dentro de la clase
-        //private static string[]nombres ={"pedro", "juan"}; //ejemplo profe
-
 
         // datos
         private string? tipo;
