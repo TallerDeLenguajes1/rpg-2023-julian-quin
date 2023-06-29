@@ -7,6 +7,7 @@ namespace Fabrica
     public class FabricaDePersonajes
     {
         public static Personaje crearPersonaje() //metodo
+
         {
             var NuevoPersonaje = new Personaje();
             NuevoPersonaje.Nombre = Constantes.nombres1[NumeroAleatorio(0,19)];

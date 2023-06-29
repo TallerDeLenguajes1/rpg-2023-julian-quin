@@ -41,6 +41,7 @@ internal class Program
             Console.WriteLine("Salud: " + personaje.Salud);
             Console.WriteLine("Fuerza: " + personaje.Fuerza);
             Console.WriteLine("Velocidad: "+personaje.Velocidad + "\n");
+            Console.WriteLine("Velocidad: "+personaje.Velocidad + "\n");
 
         }
 
