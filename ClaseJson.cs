@@ -10,6 +10,7 @@ namespace Json
         public static void GuardarPersonajes (List<Personaje>listaPersonajes, string nombreArchivo)
         {
             String formatoJson = JsonSerializer.Serialize(listaPersonajes);
+            File.WriteAllText(nombreArchivo,formatoJson);
             
         }
 
