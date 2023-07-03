@@ -4,13 +4,28 @@ namespace Jugadores
     public class Constantes
     {
         //primer grupo
-        public static string[] nombres1 = {"Fibonacci","Euclides","Pythagoras","Archimedes","Pascal","Gauss",
-        "Newton","Hilbert","Turing","Fermat","Euler","Ramanujan","Descartes","Galois","Cantor","Bernoulli",
-        "Laplace","Leibniz","Mobius"};
-        //segundo grupo
-        public static string[] nombres2 = {"Curie","Mendeleev","Lavoisier","Boyle","Franklin","Haber","Seaborg",
-        "Arrhenius","Elion","Calvin","Modrich","Domagk","Hodgkin","Urey","Olah","Dalton","Rutherford","Avogadro","Faraday","Pasteur"};
-        public static string[] tipo = { "Matematico","Quimico" };
+        public static string[,] nombresTipo = {
+        {"Fibonacci","Devil-Matematico"},{"Euclides","Devil-Matematico"},
+        {"Pythagoras","Devil-Matematico"},{"Archimedes","Devil-Matematico"},
+        {"Pascal","Devil-Matematico"},{"Gauss","Devil-Matematico"},
+        {"Newton","Devil-Matematico"},{"Hilbert","Devil-Matematico"},
+        {"Turing","Devil-Matematico"},{"Fermat","Devil-Matematico"},
+        {"Euler","Devil-Matematico"},{"Ramanujan","Devil-Matematico"},
+        {"Descartes","Devil-Matematico"},{"Galois","Devil-Matematico"},
+        {"Cantor","Devil-Matematico"},{"Bernoulli","Devil-Matematico"},
+        {"Laplace","Devil-Matematico"},{"Leibniz","Devil-Matematico"},
+        {"Mobius","Devil-Matematico"}, {"Curie","Demon-Quimico"},
+        {"Mendeleev","Demon-Quimico"},{"Lavoisier","Demon-Quimico"},
+        {"Boyle","Demon-Quimico"},{"Franklin","Demon-Quimico"},
+        {"Haber","Demon-Quimico"},{"Seaborg","Demon-Quimico"},
+        {"Arrhenius","Demon-Quimico"},{"Elion","Demon-Quimico"},
+        {"Calvin","Demon-Quimico"}, {"Modrich","Demon-Quimico"},
+        {"Domagk","Demon-Quimico"},{"Hodgkin","Demon-Quimico"},
+        {"Urey","Demon-Quimico"}, {"Olah","Demon-Quimico"},
+        {"Dalton","Demon-Quimico"},{"Rutherford","Demon-Quimico"},
+        {"Avogadro","Demon-Quimico"},{"Faraday","Demon-Quimico"},
+        {"Pasteur","Demon-Quimico"}
+        };
 
     }
 
@@ -21,7 +36,7 @@ namespace Jugadores
         private string? tipo;
         private string? nombre;
         private DateTime fechaNac;
-        private string? apodo;
+        //private string? apodo;
         private int edad; //entre 0 y 300
         public static int prueba;
 
@@ -36,7 +51,7 @@ namespace Jugadores
 
         public string Nombre { get => nombre; set => nombre = value; }
         public DateTime FechaNac { get => fechaNac; set => fechaNac = value; }
-        public string Apodo { get => apodo; set => apodo = value; }
+        //public string Apodo { get => apodo; set => apodo = value; }
         public int Edad { get => edad; set => edad = value; }
         public int Velocidad { get => velocidad; set => velocidad = value; }
         public int Fuerza { get => fuerza; set => fuerza = value; }
