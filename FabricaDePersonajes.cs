@@ -10,8 +10,10 @@ namespace Fabrica
 
         {
             var NuevoPersonaje = new Personaje();
-            NuevoPersonaje.Nombre = Constantes.nombres1[NumeroAleatorio(0,19)];
-            NuevoPersonaje.Tipo = Constantes.tipo[NumeroAleatorio(0,2)];
+            int nombre = NumeroAleatorio(0,38);
+
+            NuevoPersonaje.Nombre = Constantes.nombresTipo[nombre,0];
+            NuevoPersonaje.Tipo = Constantes.nombresTipo[nombre,1];
             NuevoPersonaje.FechaNac = new DateTime(NumeroAleatorio(1723,2024),NumeroAleatorio(1,13),NumeroAleatorio(1,31));
             NuevoPersonaje.Edad= edad(NuevoPersonaje.FechaNac.Year);
             NuevoPersonaje.Fuerza= NumeroAleatorio(1,11);
