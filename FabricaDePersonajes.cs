@@ -4,16 +4,15 @@ using Jugadores;
 namespace Fabrica
 {
     
-    public class FabricaDePersonajes
+    public static class FabricaDePersonajes
     {
-        public static Personaje crearPersonaje() //metodo
+        public static Personaje crearPersonaje(string nombre) //metodo
 
         {
             var NuevoPersonaje = new Personaje();
-            int nombre = NumeroAleatorio(0,38);
-
-            NuevoPersonaje.Nombre = Constantes.nombresTipo[nombre,0];
-            NuevoPersonaje.Tipo = Constantes.nombresTipo[nombre,1];
+        
+            NuevoPersonaje.Nombre = nombre;
+            //NuevoPersonaje.Tipo = Constantes.nombres[nombre];
             NuevoPersonaje.FechaNac = new DateTime(NumeroAleatorio(1723,2024),NumeroAleatorio(1,13),NumeroAleatorio(1,31));
             NuevoPersonaje.Edad= edad(NuevoPersonaje.FechaNac.Year);
             NuevoPersonaje.Fuerza= NumeroAleatorio(1,11);
