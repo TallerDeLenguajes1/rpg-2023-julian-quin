@@ -4,6 +4,7 @@ using Json;
 using HelperApi;
 using Api;
 using NAudio.Wave;
+using Textos;
 internal class Program
 {
     private static void Main(string[] args)
@@ -15,36 +16,12 @@ internal class Program
             {
                 waveOut.Init(audioFile);
                 waveOut.Play();
-                Console.WriteLine(@"
-                                         _ __
-        ___                             | '  \
-   ___  \ /  ___         ,'\_           | .-. \        /|
-   \ /  | |,'__ \  ,'\_  |   \          | | | |      ,' |_   /|
- _ | |  | |\/  \ \ |   \ | |\_|    _    | |_| |   _ '-. .-',' |_   _
-// | |  | |____| | | |\_|| |__    //    |     | ,'_`. | | '-. .-',' `. ,'\_
-\\_| |_,' .-, _  | | |   | |\ \  //    .| |\_/ | / \ || |   | | / |\  \|   \
- `-. .-'| |/ / | | | |   | | \ \//     |  |    | | | || |   | | | |_\ || |\_|
-   | |  | || \_| | | |   /_\  \ /      | |`    | | | || |   | | | .---'| |
-   | |  | |\___,_\ /_\ _      //       | |     | \_/ || |   | | | |  /\| |
-   /_\  | |           //_____//       .||`  _   `._,' | |   | | \ `-' /| |
-        /_\           `------'        \ |  /-\ND _     `.\  | |  `._,' /_\
-                                       \|        |HE         `.\
-                                      __        _           _   __  _
-                                     /   |__|  /_\  |\  /| |_) |_  |_)
-                                     \__ |  | /   \ | \/ | |_) |__ | \
-                                             _  _   _   __  _  _   __ ___ _
-                                            (_)|-  (_` |_  /  |_) |_   | (_`
-                                                   ._) |__ \_ | \ |__  | ._)
-");
+                Console.WriteLine(Textos.TextosJuego.logo);
                 Console.WriteLine("Presione un tecla para iniciar...");
                 Console.ReadKey();
                 Console.WriteLine("La batalla comienza en 3,2,1...");
                 Console.ReadKey();
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-
-                Console.WriteLine("\t\t=====================\n\t\t        FIGTH...\n\t\t=====================");
-                Console.ResetColor();
 
                 const string NombreJson = "Personajes.json";
                 var ListaPersonajes = new List<Personaje>();
@@ -73,6 +50,11 @@ internal class Program
                 }
                 MostrarPersonajes(ListaPersonajes);
                 Console.ReadKey();
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
+                Console.ResetColor();
+                
                 Pelea(ListaPersonajes);
                 
                 Console.ReadKey();
@@ -153,6 +135,7 @@ internal class Program
         Console.WriteLine("\n\t¡¡¡¡¡¡¡GANADOR!!!!!!");
         Console.WriteLine("\tESTADISTICAS:\n");
         Console.WriteLine("\tNOMBRE "+ListaPersonajes[0].Nombre);
+        Console.WriteLine("\tTIPO " + ListaPersonajes[0].Tipo);
         Console.WriteLine("\tSALUD " + ListaPersonajes[0].Salud+"%");
         Console.ResetColor();
 
