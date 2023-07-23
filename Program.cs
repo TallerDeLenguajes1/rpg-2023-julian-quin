@@ -62,7 +62,7 @@ internal class Program
                             IndiceNombre = FabricaDePersonajes.NumeroAleatorio(0, PersonajesHogw.Count);  // para que no se repita en el cargado de los 10 personajes
                         } while (NombresUsados.Contains(IndiceNombre));
                         NombresUsados.Add(IndiceNombre);
-                        var NewPersonaje = FabricaDePersonajes.crearPersonaje(PersonajesHogw[IndiceNombre].Personaje);
+                        var NewPersonaje = FabricaDePersonajes.crearPersonaje(PersonajesHogw[IndiceNombre].Personaje,PersonajesHogw[IndiceNombre].Id,PersonajesHogw[IndiceNombre].Apodo);
                         ListaPersonajes.Add(NewPersonaje);
                     }
                     PersonajesJson.GuardarPersonajes(ListaPersonajes, NombreJson);//guardo la lista en .json
@@ -71,11 +71,10 @@ internal class Program
                 {
                     ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson);
                 }
-                //MostrarPersonajes(ListaPersonajes);
+                MostrarPersonajes(ListaPersonajes);
+                Console.ReadKey();
                 Pelea(ListaPersonajes);
-
-
-
+                
                 Console.ReadKey();
             }
         }
@@ -169,6 +168,7 @@ internal class Program
         foreach (var personaje in ListaPersonaje)
         {
             Console.WriteLine("Nombre: " + personaje.Nombre);
+            Console.WriteLine("Apodo: " + personaje.Apodo);
             Console.WriteLine("Edad: " + personaje.Edad);
             Console.WriteLine("Fecha de nacimiento: " + personaje.FechaNac.Day + "\\" + personaje.FechaNac.Month + "\\" + personaje.FechaNac.Year);
             Console.WriteLine("Tipo: " + personaje.Tipo);
