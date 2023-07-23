@@ -7,7 +7,7 @@ namespace Jugadores
         private string? tipo;
         private string? nombre;
         private DateTime fechaNac;
-        //private string? apodo;
+        private string? apodo;
         private int edad; //entre 0 y 300
         public static int prueba;
 
@@ -22,7 +22,7 @@ namespace Jugadores
 
         public string Nombre { get => nombre; set => nombre = value; }
         public DateTime FechaNac { get => fechaNac; set => fechaNac = value; }
-        //public string Apodo { get => apodo; set => apodo = value; }
+        public string Apodo { get => apodo; set => apodo = value; }
         public int Edad { get => edad; set => edad = value; }
         public int Velocidad { get => velocidad; set => velocidad = value; }
         public int Fuerza { get => fuerza; set => fuerza = value; }
@@ -31,7 +31,7 @@ namespace Jugadores
         public int Destreza { get => destreza; set => destreza = value; }
         public string? Tipo { get => tipo; set => tipo = value; }
         public int Nivel { get => nivel; set => nivel = value; }
-        //public static int Prueba { get => prueba; set => prueba = value; }
+    
     }
 
 
