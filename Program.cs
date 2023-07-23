@@ -11,10 +11,8 @@ internal class Program
         string soundFilePath = "X2Download.app - harry potter musica (256 kbps).mp3";
         using (var waveOut = new WaveOutEvent())
         {
-            // Creamos un WaveFileReader para leer el archivo de sonido
             using (var audioFile = new AudioFileReader(soundFilePath))
             {
-                // Reproducimos el sonido en un bucle infinito
                 waveOut.Init(audioFile);
                 waveOut.Play();
                 Console.WriteLine(@"
@@ -78,8 +76,6 @@ internal class Program
 
 
 
-                // Tu lógica o código principal aquí
-                Console.WriteLine("Presiona cualquier tecla para detener el sonido.");
                 Console.ReadKey();
             }
         }
