@@ -1,71 +1,165 @@
 ﻿using Jugadores;
 using Fabrica;
 using Json;
+using HelperApi;
+using Api;
+using NAudio.Wave;
 internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-
-        Console.WriteLine("\t\t=====================\n\t\tBATALLA DE CEREBRITOS\n\t\t=====================");
-        Console.ResetColor();
-
-        string NombreJson = "Personajes.json";
-        var ListaPersonajes = new List<Personaje>();
-
-        if (!PersonajesJson.Existe(NombreJson))
+        string soundFilePath = "X2Download.app - harry potter musica (256 kbps).mp3";
+        using (var waveOut = new WaveOutEvent())
         {
-            for (int i = 0; i < 10; i++)
+            // Creamos un WaveFileReader para leer el archivo de sonido
+            using (var audioFile = new AudioFileReader(soundFilePath))
             {
-                var NewPersonaje = FabricaDePersonajes.crearPersonaje();
-                ListaPersonajes.Add(NewPersonaje);
-            }
-            PersonajesJson.GuardarPersonajes(ListaPersonajes, NombreJson);//guardo la lista en .json
-        }
-        else
-        {
-            ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson);
-        }
-        MostrarPersonajes(ListaPersonajes);
-        Pelea(ListaPersonajes);
-        int valorCambiante = 0;
+                // Reproducimos el sonido en un bucle infinito
+                waveOut.Init(audioFile);
+                waveOut.Play();
+                Console.WriteLine(@"
+                                         _ __
+        ___                             | '  \
+   ___  \ /  ___         ,'\_           | .-. \        /|
+   \ /  | |,'__ \  ,'\_  |   \          | | | |      ,' |_   /|
+ _ | |  | |\/  \ \ |   \ | |\_|    _    | |_| |   _ '-. .-',' |_   _
+// | |  | |____| | | |\_|| |__    //    |     | ,'_`. | | '-. .-',' `. ,'\_
+\\_| |_,' .-, _  | | |   | |\ \  //    .| |\_/ | / \ || |   | | / |\  \|   \
+ `-. .-'| |/ / | | | |   | | \ \//     |  |    | | | || |   | | | |_\ || |\_|
+   | |  | || \_| | | |   /_\  \ /      | |`    | | | || |   | | | .---'| |
+   | |  | |\___,_\ /_\ _      //       | |     | \_/ || |   | | | |  /\| |
+   /_\  | |           //_____//       .||`  _   `._,' | |   | | \ `-' /| |
+        /_\           `------'        \ |  /-\ND _     `.\  | |  `._,' /_\
+                                       \|        |HE         `.\
+                                      __        _           _   __  _
+                                     /   |__|  /_\  |\  /| |_) |_  |_)
+                                     \__ |  | /   \ | \/ | |_) |__ | \
+                                             _  _   _   __  _  _   __ ___ _
+                                            (_)|-  (_` |_  /  |_) |_   | (_`
+                                                   ._) |__ \_ | \ |__  | ._)
+");
+                Console.WriteLine("Presione un tecla para iniciar...");
+                Console.ReadKey();
+                Console.WriteLine("La batalla comienza en 3,2,1...");
+                Console.ReadKey();
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Cyan;
 
-        Console.Write("Valor cambiante: ");
+                Console.WriteLine("\t\t=====================\n\t\t        FIGTH...\n\t\t=====================");
+                Console.ResetColor();
+
+                const string NombreJson = "Personajes.json";
+                var ListaPersonajes = new List<Personaje>();
+                var NombresUsados = new List<int>();
+                int IndiceNombre = 0;
+
+                if (!PersonajesJson.Existe(NombreJson))
+                {
+                    var PersonajesHogw = new List<PersonajesHogwarts>();
+                    PersonajesHogw = RecursoApiWeb.GetApi("https://harry-potter-api.onrender.com/personajes");
+                    for (int i = 0; i < 10; i++)
+                    {
+                        do
+                        {
+                            IndiceNombre = FabricaDePersonajes.NumeroAleatorio(0, PersonajesHogw.Count);  // para que no se repita en el cargado de los 10 personajes
+                        } while (NombresUsados.Contains(IndiceNombre));
+                        NombresUsados.Add(IndiceNombre);
+                        var NewPersonaje = FabricaDePersonajes.crearPersonaje(PersonajesHogw[IndiceNombre].Personaje);
+                        ListaPersonajes.Add(NewPersonaje);
+                    }
+                    PersonajesJson.GuardarPersonajes(ListaPersonajes, NombreJson);//guardo la lista en .json
+                }
+                else
+                {
+                    ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson);
+                }
+                //MostrarPersonajes(ListaPersonajes);
+                Pelea(ListaPersonajes);
+
+
+
+                // Tu lógica o código principal aquí
+                Console.WriteLine("Presiona cualquier tecla para detener el sonido.");
+                Console.ReadKey();
+            }
+        }
 
     }
 
     private static void Pelea(List<Personaje> ListaPersonajes)
     {
+        int indice;
+        int indice2;
 
-        int indice = FabricaDePersonajes.NumeroAleatorio(0, 10);
-        int indice2 = FabricaDePersonajes.NumeroAleatorio(0, 10);
+        do
+        {
+            indice = FabricaDePersonajes.NumeroAleatorio(0, 10);
+            indice2 = FabricaDePersonajes.NumeroAleatorio(0, 10);
+        } while (indice == indice2);
 
         var Personaje1 = ListaPersonajes[indice];
         var Personaje2 = ListaPersonajes[indice2];
         bool turno = true;
+
+        var columnaInicial = Console.CursorLeft;
+        int longitudTexto = "Salud: ".Length;
+
         while (ListaPersonajes.Count > 1)
         {
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"\t{Personaje1.Nombre} |vs| {Personaje2.Nombre}\n");
+            Console.ResetColor();
+
             while (Personaje1.Salud > 0 && Personaje2.Salud > 0)
             {
+
                 if (turno)
                 {
                     Atack(Personaje1, Personaje2); //personaje1 ataca y personaje2 se defiende
-                    Console.WriteLine($"salud P2 {Personaje2.Salud}%");
                     turno = false;
                 }
                 else
                 {
-                    Atack(Personaje2, Personaje1);
-                    Console.WriteLine($"salud P1 {Personaje1.Salud}%");
+                    Atack(Personaje2, Personaje1); //viceverza
                     turno = true;
                 }
+                Console.SetCursorPosition(columnaInicial + longitudTexto, Console.CursorTop);
+                Console.Write($"\tSalud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% ".PadRight(12));
+                Thread.Sleep(150);
+
             }
-            Recompenza(Personaje1,Personaje2, ListaPersonajes);
-            if (Personaje1.Salud == 0) Personaje1 = ListaPersonajes[FabricaDePersonajes.NumeroAleatorio(0,ListaPersonajes.Count)];
-            else Personaje2 = ListaPersonajes[FabricaDePersonajes.NumeroAleatorio(0,ListaPersonajes.Count)];
-            Console.WriteLine("Tecla");
+            Recompenza_Eliminacion(Personaje1, Personaje2, ListaPersonajes);
+
+            if (Personaje1.Salud == 0)
+            {
+                do
+                {
+                    indice = FabricaDePersonajes.NumeroAleatorio(0, ListaPersonajes.Count);
+                    Personaje1 = ListaPersonajes[indice];
+                } while ((ListaPersonajes.IndexOf(Personaje2) == indice) && ListaPersonajes.Count > 1);
+
+            }
+            else
+            {
+                do
+                {
+                    indice = FabricaDePersonajes.NumeroAleatorio(0, ListaPersonajes.Count);
+                    Personaje2 = ListaPersonajes[indice];
+                } while ((ListaPersonajes.IndexOf(Personaje1) == indice) && ListaPersonajes.Count > 1);
+            }
+
+
+            Console.WriteLine("\tTecla");
             Console.ReadKey();
+
         }
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("\n\t¡¡¡¡¡¡¡GANADOR!!!!!!");
+        Console.WriteLine("\tESTADISTICAS:\n");
+        Console.WriteLine("\tNOMBRE "+ListaPersonajes[0].Nombre);
+        Console.WriteLine("\tSALUD " + ListaPersonajes[0].Salud+"%");
+        Console.ResetColor();
 
 
     }
@@ -75,9 +169,7 @@ internal class Program
 
     private static void MostrarPersonajes(List<Personaje> ListaPersonaje)
     {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("\n\t[============= PERSONAJES =============]\n");
-        Console.ResetColor();
+
         foreach (var personaje in ListaPersonaje)
         {
             Console.WriteLine("Nombre: " + personaje.Nombre);
@@ -103,21 +195,19 @@ internal class Program
         PersonajeEnDefensa.Salud -= Danio;
         if (PersonajeEnDefensa.Salud < 0) PersonajeEnDefensa.Salud = 0;
     }
-    private static void Recompenza(Personaje Personaje1, Personaje Personaje2, List<Personaje> ListaPersonaje)
+    private static void Recompenza_Eliminacion(Personaje Personaje1, Personaje Personaje2, List<Personaje> ListaPersonaje)
     {
         if (Personaje1.Salud == 0) ListaPersonaje.Remove(Personaje1);
         else ListaPersonaje.Remove(Personaje2);
         if (Personaje1.Salud > 0)
         {
-            Console.WriteLine($"Personaje {Personaje2.Nombre} Eliminado");
-            Console.WriteLine("Salud = "+ Personaje2.Salud);
-            Personaje1.Salud += 5;
+            Console.WriteLine("\n\tPersonaje " + Personaje2.Nombre + " ¡Eliminado!");
+            Personaje1.Salud += 10;
         }
         else
         {
-            Console.WriteLine($"Personaje {Personaje1.Nombre} Eliminado");
-            Console.WriteLine("Salud = "+Personaje1.Salud);
-            Personaje2.Salud += 5;
+            Console.WriteLine("\n\tPersonaje " + Personaje1.Nombre + " ¡Eliminado!");
+            Personaje2.Salud += 10;
         }
     }
 }
