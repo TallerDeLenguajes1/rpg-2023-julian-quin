@@ -69,7 +69,7 @@ internal class Program
                 Console.ReadKey();
                 Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
                 Pelea(ListaPersonajes,final);
-                Console.WriteLine("¡¡¡¡¡¡¡¡¡ Ganador " + ListaPersonajes[0].Nombre+ " !!!!!!!!!!");
+                Console.WriteLine("\n¡¡ GANADOR " + ListaPersonajes[0].Nombre+ " !!");
                 Console.ReadKey();
             }
         }
@@ -146,10 +146,11 @@ internal class Program
             }
          
         }
-        Console.WriteLine("\t\nPersonajes que pasan a la sigueinte ronda\n");
+        PersonajeEliminar.Clear();
+        if(ListaPersonajes.Count !=1) Console.WriteLine("\t\nPERSONAJES QUE PASAN A LA SIGUIENTE RONDA\n");
         foreach (var personaje in ListaPersonajes)
         {
-            Console.WriteLine(personaje.Nombre + " - salud " + personaje.Salud + "%");
+           if(ListaPersonajes.Count !=1) Console.WriteLine(personaje.Nombre + " - salud " + personaje.Salud + "%");
         }
 
     }
