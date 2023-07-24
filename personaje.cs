@@ -4,8 +4,9 @@ namespace Jugadores
     {
 
         // datos
-        private string? tipo;
         private string? nombre;
+        private string? tipo;
+        private int id ;
         private DateTime fechaNac;
         private string? apodo;
         private int edad; //entre 0 y 300
@@ -31,7 +32,7 @@ namespace Jugadores
         public int Destreza { get => destreza; set => destreza = value; }
         public string? Tipo { get => tipo; set => tipo = value; }
         public int Nivel { get => nivel; set => nivel = value; }
-    
+        public int Id { get => id; set => id = value; }
     }
 
 
