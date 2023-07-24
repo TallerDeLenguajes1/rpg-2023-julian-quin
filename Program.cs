@@ -17,13 +17,15 @@ internal class Program
                 waveOut.Init(audioFile);
                 waveOut.Play();
                 Console.WriteLine(Textos.TextosJuego.logo); // muestro el logo del juego
-                Console.WriteLine("Presione un tecla para iniciar...");
-                Console.ReadKey();
-                Console.WriteLine("octavos de final(preciona una tecla)");
+                Console.WriteLine("Iniciar...");
                 Console.ReadKey();
                 Console.Clear();
 
                 const string NombreJson = "Personajes.json";
+                const int octavos = 16;
+                const int cuartos = 8;
+                const int semifinal = 4;
+                const int final = 2;
                 var ListaPersonajes = new List<Personaje>();
                 var IndicesNombresUsados = new List<int>();
                 int IndiceNombre = 0;
@@ -48,21 +50,32 @@ internal class Program
                 {
                     ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson); //si json existe
                 }
-                //MostrarPersonajes(ListaPersonajes);
-                Console.ReadKey();
-                Console.Clear();
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
                 Console.ResetColor();
-
-                Pelea(ListaPersonajes);
-
+                Console.WriteLine("\nPresione un tecla para iniciar los octavos de final...\n");
+                Console.ReadKey();
+                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
+                Pelea(ListaPersonajes,octavos);
+                Console.WriteLine("\nPresione un tecla para iniciar los cuartos de final...\n");
+                Console.ReadKey();
+                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
+                Pelea(ListaPersonajes,cuartos);
+                Console.WriteLine("\nPresione un tecla para iniciar la semifinal...\n");
+                Console.ReadKey();
+                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
+                Pelea(ListaPersonajes,semifinal);
+                Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
+                Console.ReadKey();
+                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
+                Pelea(ListaPersonajes,final);
+                Console.WriteLine("¡¡¡¡¡¡¡¡¡ Ganador " + ListaPersonajes[0].Nombre+ " !!!!!!!!!!");
                 Console.ReadKey();
             }
         }
 
     }
-    private static void Pelea(List<Personaje> ListaPersonajes)
+    private static void Pelea(List<Personaje> ListaPersonajes, int cantParticipantes)
     {
         int indice;
         int indice2;
@@ -75,7 +88,7 @@ internal class Program
         var columnaInicial = Console.CursorLeft;
         int longitudTexto = "Salud: ".Length;
 
-        while (IndicesNombresUsados.Count !=16 )
+        while (IndicesNombresUsados.Count != cantParticipantes )
         {
             //determino los personaje 1 y personaje 2 sin repetir
             do
@@ -133,7 +146,7 @@ internal class Program
             }
          
         }
-        Console.WriteLine("\t\nPersonajes que pasan a octavos\n");
+        Console.WriteLine("\t\nPersonajes que pasan a la sigueinte ronda\n");
         foreach (var personaje in ListaPersonajes)
         {
             Console.WriteLine(personaje.Nombre + " - salud " + personaje.Salud + "%");
