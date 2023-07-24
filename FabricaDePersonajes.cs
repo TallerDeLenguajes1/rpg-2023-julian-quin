@@ -21,6 +21,7 @@ namespace Fabrica
             NuevoPersonaje.Nivel = NumeroAleatorio(1,11);
             NuevoPersonaje.Velocidad = NumeroAleatorio(1,11);
             NuevoPersonaje.Apodo=apodo;
+            NuevoPersonaje.Id = id;
 
             if(id >= 1 && id <=9 || id >=12 && id <=14 )
             {
