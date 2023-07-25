@@ -9,15 +9,19 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        string soundFilePath = "X2Download.app - harry potter musica (256 kbps).mp3";
+        string soundFilePath = "Song_Harry_Potter.mp3";
         using (var waveOut = new WaveOutEvent())
         {
             using (var audioFile = new AudioFileReader(soundFilePath))
             {
                 waveOut.Init(audioFile);
                 waveOut.Play();
+                Console.Clear();
                 Console.WriteLine(Textos.TextosJuego.logo); // muestro el logo del juego
-                Console.WriteLine("Iniciar...");
+                Console.WriteLine("Preciona una tecla para iniciar...");
+                Console.ReadKey();
+                Console.Clear();
+                Console.WriteLine(Textos.TextosJuego.presentacion);
                 Console.ReadKey();
                 Console.Clear();
 
@@ -27,83 +31,112 @@ internal class Program
                 const int semifinal = 4;
                 const int final = 2;
                 var ListaPersonajes = new List<Personaje>();
-                var IndicesNombresUsados = new List<int>();
-                int IndiceNombre = 0;
-
-                if (!PersonajesJson.Existe(NombreJson)) // si json no existe
+                CargarJuego(NombreJson, ref ListaPersonajes);
+                int flag = 0;
+                string? NumTexto;
+                do
                 {
-                    var PersonajesHogw = new List<PersonajesHogwarts>();
-                    PersonajesHogw = RecursoApiWeb.GetApi("https://harry-potter-api.onrender.com/personajes");
-                    for (int i = 0; i < 16; i++)
+                    Console.WriteLine(Textos.TextosJuego.panelInicio);
+                    NumTexto = Console.ReadLine();
+                    int.TryParse(NumTexto, out flag);
+                    Console.Clear();
+                    switch (flag)
                     {
-                        do
-                        {
-                            IndiceNombre = FabricaDePersonajes.NumeroAleatorio(0, PersonajesHogw.Count);  // para que no se repita en el cargado de los 10 personajes
-                        } while (IndicesNombresUsados.Contains(IndiceNombre));
-                        IndicesNombresUsados.Add(IndiceNombre);
-                        var NewPersonaje = FabricaDePersonajes.crearPersonaje(PersonajesHogw[IndiceNombre].Personaje, PersonajesHogw[IndiceNombre].Id, PersonajesHogw[IndiceNombre].Apodo);
-                        ListaPersonajes.Add(NewPersonaje);
+                        case 1:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.ResetColor();
+                            Console.WriteLine("\t\t=====================\n\t\t   OCTAVOS DE FINAL\n\t\t=====================");
+                            Pelea(ListaPersonajes, octavos);
+                            Console.WriteLine("\nPresione un tecla para iniciar los CUARTOS de final...\n");
+                            Console.ReadKey();
+                            Console.WriteLine("\t\t=====================\n\t\t   CUARTOS DE FINAL\n\t\t=====================");
+                            Pelea(ListaPersonajes, cuartos);
+                            Console.WriteLine("\nPresione un tecla para iniciar la SEMIFINAL...\n");
+                            Console.ReadKey();
+                            Console.WriteLine("\t\t=====================\n\t\t      SEMIFINAL\n\t\t=====================");
+                            Pelea(ListaPersonajes, semifinal);
+                            Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
+                            Console.ReadKey();
+                            Console.WriteLine("\t\t=====================\n\t\t\tFINAL\n\t\t=====================");
+                            Pelea(ListaPersonajes, final);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\n\t¡¡ GANADOR " + ListaPersonajes[0].Nombre + " !!");
+                            Console.ResetColor();
+                            Console.Clear();
+                            break;
+                        case 2:
+                            MostrarPersonajes(ListaPersonajes);
+                        break;
                     }
-                    PersonajesJson.GuardarPersonajes(ListaPersonajes, NombreJson);//guardo la lista en .json
-                }
-                else
-                {
-                    ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson); //si json existe
-                }
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.ResetColor();
-                Console.WriteLine("\nPresione un tecla para iniciar los octavos de final...\n");
-                Console.ReadKey();
-                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
-                Pelea(ListaPersonajes,octavos);
-                Console.WriteLine("\nPresione un tecla para iniciar los cuartos de final...\n");
-                Console.ReadKey();
-                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
-                Pelea(ListaPersonajes,cuartos);
-                Console.WriteLine("\nPresione un tecla para iniciar la semifinal...\n");
-                Console.ReadKey();
-                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
-                Pelea(ListaPersonajes,semifinal);
-                Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
-                Console.ReadKey();
-                Console.WriteLine("\t\t=====================\n\t\t\tFIGTH...\n\t\t=====================");
-                Pelea(ListaPersonajes,final);
-                Console.WriteLine("\n¡¡ GANADOR " + ListaPersonajes[0].Nombre+ " !!");
-                Console.ReadKey();
+                } while (flag ==1 || flag ==2);
+
             }
         }
 
     }
+
+    /////////////////////////////// FIN MAIN ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private static void CargarJuego(string NombreJson, ref List<Personaje> ListaPersonajes)
+    {
+        Console.WriteLine("Cargando...");
+        int IndiceNombre;
+        var IndicesNombresUsados = new List<int>();
+        const string nombreJson2 = @"JsonPersonajesAuxilio\PersonajesAuxilio.json";
+        if (PersonajesJson.Existe(NombreJson) && File.ReadAllText(NombreJson).Length == 0) File.Delete(NombreJson);//elimino si existe el json y está vacio
+
+        if (!PersonajesJson.Existe(NombreJson)) // si json no existe
+        {
+            var PersonajesHogw = RecursoApiWeb.GetListaPersonajes("https://harry-potter-api.onrender.com/personajes");
+            if (PersonajesHogw != null && PersonajesHogw.Count != 0)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    do
+                    {
+                        IndiceNombre = FabricaDePersonajes.NumeroAleatorio(0, PersonajesHogw.Count);  // para que no se repita en el cargado de los 10 personajes
+                    } while (IndicesNombresUsados.Contains(IndiceNombre));
+                    IndicesNombresUsados.Add(IndiceNombre);
+                    var NewPersonaje = FabricaDePersonajes.crearPersonaje(PersonajesHogw[IndiceNombre].Personaje, PersonajesHogw[IndiceNombre].Id, PersonajesHogw[IndiceNombre].Apodo);
+                    ListaPersonajes.Add(NewPersonaje);
+                }
+                PersonajesJson.GuardarPersonajes(ListaPersonajes, NombreJson);//guardo la lista en .json
+
+            }
+            else
+            {
+                Console.WriteLine("\n¡se inicia con json de respaldo!");
+                ListaPersonajes = PersonajesJson.LeerPersonajes(nombreJson2);
+            }
+
+        }
+        else
+        {
+            ListaPersonajes = PersonajesJson.LeerPersonajes(NombreJson);
+        }
+        Console.Clear();
+    }
+
     private static void Pelea(List<Personaje> ListaPersonajes, int cantParticipantes)
     {
-        int indice;
-        int indice2;
-        var IndicesNombresUsados = new List<int>();
-        var PersonajeEliminar  = new List<int>();
-        var Personaje1 = new Personaje ();
-        var Personaje2 = new Personaje ();
+        var IndicesPersonajesUsados = new List<int>();
+        var IDsPersonajeEliminar = new List<int>();
+        var Personaje1 = new Personaje();
+        var Personaje2 = new Personaje();
+        int DanioProvocado;
         bool turno = true;
 
         var columnaInicial = Console.CursorLeft;
-        int longitudTexto = "Salud: ".Length;
+        var posiciion = Console.CursorTop;
+        Console.CursorVisible = false;
 
-        while (IndicesNombresUsados.Count != cantParticipantes )
+        while (IndicesPersonajesUsados.Count != cantParticipantes)
         {
             //determino los personaje 1 y personaje 2 sin repetir
-            do
-            {
-                indice = FabricaDePersonajes.NumeroAleatorio(0, ListaPersonajes.Count);
-            } while (IndicesNombresUsados.IndexOf(indice) != -1);
-            Personaje1 = ListaPersonajes[indice];
-            IndicesNombresUsados.Add(indice);
 
-            do
-            {
-                indice2 = FabricaDePersonajes.NumeroAleatorio(0, ListaPersonajes.Count);
-            } while (IndicesNombresUsados.IndexOf(indice2) != -1);
-            Personaje2 = ListaPersonajes[indice2];
-            IndicesNombresUsados.Add(indice2);
+            PersonajeAleatoreo(ListaPersonajes, IndicesPersonajesUsados, out Personaje1);
+            PersonajeAleatoreo(ListaPersonajes, IndicesPersonajesUsados, out Personaje2);
 
             //comienza la batalla
 
@@ -116,47 +149,65 @@ internal class Program
 
                 if (turno)
                 {
-                    Ataque(Personaje1, Personaje2); //personaje1 ataca y personaje2 se defiende
+                    DanioProvocado = Ataque(Personaje1, Personaje2); //personaje1 ataca y personaje2 se defiende
                     turno = false;
                 }
                 else
                 {
-                    Ataque(Personaje2, Personaje1); //viceverza
+                    DanioProvocado = Ataque(Personaje2, Personaje1); //viceverza
                     turno = true;
                 }
-                Console.SetCursorPosition(columnaInicial + longitudTexto, Console.CursorTop);
+                Console.SetCursorPosition(columnaInicial, Console.CursorTop);
                 Console.Write($"\tSalud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% ".PadRight(12));
-                Thread.Sleep(100);
+                Thread.Sleep(30);
 
             }
-            Recompenza_Eliminacion(Personaje1, Personaje2, ListaPersonajes,PersonajeEliminar);
+            Recompenza_IdEliminados(Personaje1, Personaje2, IDsPersonajeEliminar);
             Console.ReadKey();
-
         }
 
+        EliminacionPersonajes(ListaPersonajes, IDsPersonajeEliminar);
+        MostrarGanadores(ListaPersonajes);
+
+    }
+
+    private static void MostrarGanadores(List<Personaje> ListaPersonajes)
+    {
+        if (ListaPersonajes.Count != 1) Console.WriteLine("\t\nPERSONAJES QUE PASAN A LA SIGUIENTE RONDA\n");
+        foreach (var personaje in ListaPersonajes)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            if (ListaPersonajes.Count != 1) Console.WriteLine("\t" + personaje.Nombre + " - salud " + personaje.Salud + "%");
+            Console.ResetColor();
+        }
+    }
+
+    private static void EliminacionPersonajes(List<Personaje> ListaPersonajes, List<int> PersonajeEliminar)
+    {
         int id;
         Personaje? PersonajeEncontrado = new Personaje();
-        for (int i = 0; i < PersonajeEliminar .Count; i++)
+        for (int i = 0; i < PersonajeEliminar.Count; i++)
         {
-            id = PersonajeEliminar [i]; 
+            id = PersonajeEliminar[i];
             PersonajeEncontrado = ListaPersonajes.Find(persona => persona.Id == id);
             if (PersonajeEncontrado != null)
             {
                 ListaPersonajes.Remove(PersonajeEncontrado);
             }
-         
-        }
-        PersonajeEliminar.Clear();
-        if(ListaPersonajes.Count !=1) Console.WriteLine("\t\nPERSONAJES QUE PASAN A LA SIGUIENTE RONDA\n");
-        foreach (var personaje in ListaPersonajes)
-        {
-           if(ListaPersonajes.Count !=1) Console.WriteLine(personaje.Nombre + " - salud " + personaje.Salud + "%");
-        }
 
+        }
     }
 
-
-
+    private static void PersonajeAleatoreo(List<Personaje> ListaPersonajes, List<int> IndicesPersonajesUsados, out Personaje Personaje1)
+    {
+        int indice;
+        do
+        {
+            indice = FabricaDePersonajes.NumeroAleatorio(0, ListaPersonajes.Count);
+        } while (IndicesPersonajesUsados.IndexOf(indice) != -1);
+        Personaje1 = ListaPersonajes[indice];
+        IndicesPersonajesUsados.Add(indice);
+    }
 
     private static void MostrarPersonajes(List<Personaje> ListaPersonaje)
     {
@@ -177,7 +228,7 @@ internal class Program
 
         }
     }
-    private static void Ataque(Personaje PersonajeEnAtaque, Personaje PersonajeEnDefensa)
+    private static int Ataque(Personaje PersonajeEnAtaque, Personaje PersonajeEnDefensa)
     {
         int ataque = PersonajeEnAtaque.Destreza * PersonajeEnAtaque.Fuerza * PersonajeEnAtaque.Nivel;
         int Efectividad = FabricaDePersonajes.NumeroAleatorio(1, 101);
@@ -186,20 +237,21 @@ internal class Program
         int Danio = ((ataque * Efectividad) - defensa) / ajuste;
         PersonajeEnDefensa.Salud -= Danio;
         if (PersonajeEnDefensa.Salud < 0) PersonajeEnDefensa.Salud = 0;
+        return Danio;
     }
-    private static void Recompenza_Eliminacion(Personaje Personaje1, Personaje Personaje2, List<Personaje> ListaPersonaje, List<int> IdPersonajes_A_Eliminar )
+    private static void Recompenza_IdEliminados(Personaje Personaje1, Personaje Personaje2, List<int> IdPersonajesEliminar)
     {
         if (Personaje1.Salud > 0)
         {
             Console.WriteLine("\n\tPersonaje " + Personaje2.Nombre + " ¡Eliminado!\n");
             Personaje1.Salud += 10;
-            IdPersonajes_A_Eliminar.Add(Personaje2.Id);
+            IdPersonajesEliminar.Add(Personaje2.Id);
         }
         else
         {
             Console.WriteLine("\n\tPersonaje " + Personaje1.Nombre + " ¡Eliminado!\n");
             Personaje2.Salud += 10;
-            IdPersonajes_A_Eliminar.Add(Personaje1.Id);
+            IdPersonajesEliminar.Add(Personaje1.Id);
         }
     }
 }
