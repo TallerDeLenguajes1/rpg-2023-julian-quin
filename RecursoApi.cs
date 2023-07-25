@@ -6,40 +6,39 @@ namespace HelperApi
 {
     class RecursoApiWeb
     {
-    public static List<PersonajesHogwarts> GetApi(string URL)
-    {
-        var url = URL;
-        var request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.ContentType = "application/json";
-        request.Accept = "application/json";
-        List<PersonajesHogwarts>? personajes = new List<PersonajesHogwarts>();
-        try
+        public static List<PersonajesHogwarts>? GetListaPersonajes(string URL)
         {
-            using (WebResponse response = request.GetResponse())
+            var url = URL;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = "application/json";
+            List<PersonajesHogwarts>? personajes = null;
+            try
             {
-                using (Stream strReader = response.GetResponseStream())
+                using (WebResponse response = request.GetResponse())
                 {
-                    if (strReader != null)
+                    using (Stream strReader = response.GetResponseStream())
                     {
-                        using (StreamReader objReader = new StreamReader(strReader))
+                        if (strReader == null) return null;
                         {
-                            string responseBody = objReader.ReadToEnd();
-                            personajes = JsonSerializer.Deserialize<List<PersonajesHogwarts>>(responseBody);
+                            using (StreamReader objReader = new StreamReader(strReader))
+                            {
+                                string responseBody = objReader.ReadToEnd();
+                                personajes = JsonSerializer.Deserialize<List<PersonajesHogwarts>>(responseBody);
+                            }
 
                         }
 
                     }
-
                 }
             }
+            catch (WebException ex)
+            {
+                Console.WriteLine("Problemas de acceso a la API "+ ex.Message);
+                return personajes;
+            }
+            return personajes;
         }
-        catch (WebException ex)
-        {
-            Console.WriteLine("Problemas de acceso a la API");
-        }
-
-        return personajes;
-    }  
     }
 }
