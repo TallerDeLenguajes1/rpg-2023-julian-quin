@@ -43,21 +43,19 @@ internal class Program
                     switch (flag)
                     {
                         case 1:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.ResetColor();
-                            Console.WriteLine("\t\t=====================\n\t\t   OCTAVOS DE FINAL\n\t\t=====================");
+                            Console.WriteLine("\t\t\t=====================\n\t\t\t   OCTAVOS DE FINAL\n\t\t\t=====================");
                             Pelea(ListaPersonajes, octavos);
                             Console.WriteLine("\nPresione un tecla para iniciar los CUARTOS de final...\n");
                             Console.ReadKey();
-                            Console.WriteLine("\t\t=====================\n\t\t   CUARTOS DE FINAL\n\t\t=====================");
+                            Console.WriteLine("\t\t\t=====================\n\t\t\t   CUARTOS DE FINAL\n\t\t\t=====================");
                             Pelea(ListaPersonajes, cuartos);
                             Console.WriteLine("\nPresione un tecla para iniciar la SEMIFINAL...\n");
                             Console.ReadKey();
-                            Console.WriteLine("\t\t=====================\n\t\t      SEMIFINAL\n\t\t=====================");
+                            Console.WriteLine("\t\t\t=====================\n\t\t\t      SEMIFINAL\n\t\t\t=====================");
                             Pelea(ListaPersonajes, semifinal);
                             Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
                             Console.ReadKey();
-                            Console.WriteLine("\t\t=====================\n\t\t\tFINAL\n\t\t=====================");
+                            Console.WriteLine("\t\t\t=====================\n\t\t\t\tFINAL\n\t\t\t=====================");
                             Pelea(ListaPersonajes, final);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\n\t¡¡ GANADOR " + ListaPersonajes[0].Nombre + " !!");
@@ -124,11 +122,11 @@ internal class Program
         var IDsPersonajeEliminar = new List<int>();
         var Personaje1 = new Personaje();
         var Personaje2 = new Personaje();
-        int DanioProvocado;
+        int DanioProvocado1=0;
+        int DanioProvocado2=0;
         bool turno = true;
 
         var columnaInicial = Console.CursorLeft;
-        var posiciion = Console.CursorTop;
         Console.CursorVisible = false;
 
         while (IndicesPersonajesUsados.Count != cantParticipantes)
@@ -141,26 +139,25 @@ internal class Program
             //comienza la batalla
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine($"\t{Personaje1.Nombre} |vs| {Personaje2.Nombre}\n");
+            Console.WriteLine($"\t\t{Personaje1.Nombre} |vs| {Personaje2.Nombre}\n");
             Console.ResetColor();
-
+            int filaInformacion = Console.CursorTop;
             while (Personaje1.Salud > 0 && Personaje2.Salud > 0)
             {
 
                 if (turno)
                 {
-                    DanioProvocado = Ataque(Personaje1, Personaje2); //personaje1 ataca y personaje2 se defiende
+                    DanioProvocado2 = Ataque(Personaje1, Personaje2); //personaje1 ataca y personaje2 se defiende
                     turno = false;
                 }
                 else
                 {
-                    DanioProvocado = Ataque(Personaje2, Personaje1); //viceverza
+                    DanioProvocado1 = Ataque(Personaje2, Personaje1); //viceverza
                     turno = true;
                 }
-                Console.SetCursorPosition(columnaInicial, Console.CursorTop);
-                Console.Write($"\tSalud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% ".PadRight(12));
-                Thread.Sleep(30);
-
+                Console.SetCursorPosition(columnaInicial,Console.CursorTop);
+                Console.Write($"\t| Salud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% | ==== | Daño P1 {DanioProvocado1}% - Daño P2 {DanioProvocado2}% |".PadRight(70));
+                Thread.Sleep(150);
             }
             Recompenza_IdEliminados(Personaje1, Personaje2, IDsPersonajeEliminar);
             Console.ReadKey();
