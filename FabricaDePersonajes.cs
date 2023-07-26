@@ -12,7 +12,7 @@ namespace Fabrica
             var NuevoPersonaje = new Personaje();
 
             NuevoPersonaje.Nombre = nombre;
-            NuevoPersonaje.FechaNac = new DateTime(NumeroAleatorio(1900, 1980), NumeroAleatorio(1, 13), NumeroAleatorio(1, 31));
+            NuevoPersonaje.FechaNac = new DateTime(NumeroAleatorio(1930, 1980), NumeroAleatorio(1, 13), NumeroAleatorio(1, 31));
             NuevoPersonaje.Edad = edad(NuevoPersonaje.FechaNac.Year);
             NuevoPersonaje.Fuerza = NumeroAleatorio(1, 11);
             NuevoPersonaje.Armadura = NumeroAleatorio(1, 11);
