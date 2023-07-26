@@ -17,11 +17,16 @@ internal class Program
                 waveOut.Init(audioFile);
                 waveOut.Play();
                 Console.Clear();
-                Console.WriteLine(Textos.TextosJuego.logo); // muestro el logo del juego
+                Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.logo); // muestro el logo del juego
                 Console.WriteLine("Preciona una tecla para iniciar...");
                 Console.ReadKey();
                 Console.Clear();
-                Console.WriteLine(Textos.TextosJuego.presentacion);
+                Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.presentacion1+"\n");
+                Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.presentacion2);
+                Console.ReadKey();
+                Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.presentacion3);
+                Console.ReadKey();
+                Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.presentacion4);
                 Console.ReadKey();
                 Console.Clear();
 
@@ -30,51 +35,139 @@ internal class Program
                 const int cuartos = 8;
                 const int semifinal = 4;
                 const int final = 2;
+                const int CantMaxApuestas = 3;
                 var ListaPersonajes = new List<Personaje>();
                 CargarJuego(NombreJson, ref ListaPersonajes);
                 int flag = 0;
                 string? NumTexto;
+                int Apostante1 = 0, Apostante2 = 0, Apostante3 = 0;
+                bool flagApuesta = false;
+                bool menu = true;
                 do
                 {
-                    Console.WriteLine(Textos.TextosJuego.panelInicio);
+                    if (menu) Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.panelInicio1);
+                    else Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", Textos.TextosJuego.panelInicio2);
                     NumTexto = Console.ReadLine();
                     int.TryParse(NumTexto, out flag);
                     Console.Clear();
                     switch (flag)
                     {
                         case 1:
-                            Console.WriteLine("\t\t\t=====================\n\t\t\t   OCTAVOS DE FINAL\n\t\t\t=====================");
-                            Pelea(ListaPersonajes, octavos);
-                            Console.WriteLine("\nPresione un tecla para iniciar los CUARTOS de final...\n");
-                            Console.ReadKey();
-                            Console.WriteLine("\t\t\t=====================\n\t\t\t   CUARTOS DE FINAL\n\t\t\t=====================");
-                            Pelea(ListaPersonajes, cuartos);
-                            Console.WriteLine("\nPresione un tecla para iniciar la SEMIFINAL...\n");
-                            Console.ReadKey();
-                            Console.WriteLine("\t\t\t=====================\n\t\t\t      SEMIFINAL\n\t\t\t=====================");
-                            Pelea(ListaPersonajes, semifinal);
-                            Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
-                            Console.ReadKey();
-                            Console.WriteLine("\t\t\t=====================\n\t\t\t\tFINAL\n\t\t\t=====================");
-                            Pelea(ListaPersonajes, final);
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\n\t¡¡ GANADOR " + ListaPersonajes[0].Nombre + " !!");
-                            Console.ResetColor();
-                            Console.Clear();
-                            break;
+                            if (ListaPersonajes.Count == 1)
+                            {
+                                ListaPersonajes.Clear();
+                                CargarJuego(NombreJson, ref ListaPersonajes);
+                                menu = true;
+                                flagApuesta = false;
+                                Console.Clear();
+                                break;
+                            }
+                            IniciarBatallas(octavos, cuartos, semifinal, final, ListaPersonajes);
+                            menu = false;
+                        break;
                         case 2:
                             MostrarPersonajes(ListaPersonajes);
                         break;
+                        case 3:
+                            Apuestas(CantMaxApuestas, ListaPersonajes, ref Apostante1, ref Apostante2, ref Apostante3, ref flagApuesta);
+                            Console.Clear();
+                        break;
                     }
 
-                } while (flag ==1 || flag ==2);
+                } while (flag !=4 );
 
             }
         }
 
     }
 
-    /////////////////////////////// FIN MAIN ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// FIN MAIN ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static void IniciarBatallas(int octavos, int cuartos, int semifinal, int final, List<Personaje> ListaPersonajes)
+    {
+        Console.WriteLine("\u001b[38;2;128;128;0m{0}\u001b[0m", "\t\t\t=====================\n\t\t\t   OCTAVOS DE FINAL\n\t\t\t=====================");
+        Pelea(ListaPersonajes, octavos);
+        Console.WriteLine("\nPresione un tecla para iniciar los CUARTOS de final...\n");
+        Console.ReadKey();
+        Console.WriteLine("\u001b[38;2;128;128;0m{0}\u001b[0m", "\t\t\t=====================\n\t\t\t   CUARTOS DE FINAL\n\t\t\t=====================");
+        Pelea(ListaPersonajes, cuartos);
+        Console.WriteLine("\nPresione un tecla para iniciar la SEMIFINAL...\n");
+        Console.ReadKey();
+        Console.WriteLine("\u001b[38;2;128;128;0m{0}\u001b[0m", "\t\t\t=====================\n\t\t\t      SEMIFINAL\n\t\t\t=====================");
+        Pelea(ListaPersonajes, semifinal);
+        Console.WriteLine("\nPresione un tecla para jugar la FINAL...\n");
+        Console.ReadKey();
+        Console.WriteLine("\u001b[38;2;128;128;0m{0}\u001b[0m", "\t\t\t=====================\n\t\t\t\tFINAL\n\t\t\t=====================");
+        Pelea(ListaPersonajes, final);
+        Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", "\n\t¡¡ GANADOR " + ListaPersonajes[0].Nombre + " !!");
+        ListaPersonajes[0].EstadisticasPersonaje();
+        Console.WriteLine("tecla");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    private static void Apuestas(int CantMaxApuestas, List<Personaje> ListaPersonajes, ref int Apostante1, ref int Apostante2, ref int Apostante3, ref bool flagApuesta)
+    {
+        int eleccion=-2;
+        int apostante1Local = Apostante1;
+        int apostante2Local = Apostante2;
+        int apostante3Local = Apostante3;
+
+        Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", "\tBienvenido a la seccion de APUESTAS\n\n");
+        if (!flagApuesta && ListaPersonajes.Count != 1)
+        {
+            MostrarGanadores(ListaPersonajes);
+            Console.WriteLine("\n\t¿Vas a apostar? si = 1  no = 0");
+            do
+            {
+               int.TryParse(Console.ReadLine(), out eleccion);
+            } while (eleccion !=1 && eleccion !=0);
+
+            if(eleccion!=1) return;
+            flagApuesta = true;
+            for (int i = 0; i < CantMaxApuestas; i++)
+            {
+                Console.WriteLine($"\n\tApostante ({i + 1}), apueste por un personje\n");
+                do
+                {
+                    Console.WriteLine("\tDigite un valor valido");
+                    int.TryParse(Console.ReadLine(), out eleccion);
+                } while (eleccion < 0 || eleccion > 15);
+
+                if (i == 0) Apostante1 = ListaPersonajes[eleccion].Id;
+                else
+                if (i == 1) Apostante2 = ListaPersonajes[eleccion].Id;
+                else Apostante3 = ListaPersonajes[eleccion].Id;
+            }
+
+        }
+        else
+        {
+            if (ListaPersonajes.Count != 1)
+            {
+                Console.WriteLine("\t¡Hay apuestas realizadas!");
+                Console.WriteLine("\tApostante 1 => " + ListaPersonajes.Find(persona => persona.Id == apostante1Local).Nombre);
+                Console.WriteLine("\tApostante 2 => " + ListaPersonajes.Find(persona => persona.Id == apostante2Local).Nombre);
+                Console.WriteLine("\tApostante 3 => " + ListaPersonajes.Find(persona => persona.Id == apostante3Local).Nombre);
+            }
+            else
+            {
+                Console.WriteLine("\tResultados:");
+
+                if (ListaPersonajes[0].Id == Apostante1) Console.WriteLine("\t¡Gana Apostante 1!");
+                else
+                  if (ListaPersonajes[0].Id == Apostante2) Console.WriteLine("\t¡Gana Apostante 2!");
+                else
+                  if (ListaPersonajes[0].Id == Apostante3) Console.WriteLine("\t¡Gana Apostante 3!");
+                else Console.WriteLine("\t¡Todos los apostandores perdieron o no se realizaron apuestas!");
+                Console.WriteLine();
+            }
+
+        }
+        Console.WriteLine("\nteclea para salir");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
 
     private static void CargarJuego(string NombreJson, ref List<Personaje> ListaPersonajes)
     {
@@ -122,8 +215,8 @@ internal class Program
         var IDsPersonajeEliminar = new List<int>();
         var Personaje1 = new Personaje();
         var Personaje2 = new Personaje();
-        int DanioProvocado1=0;
-        int DanioProvocado2=0;
+        int DanioProvocado1 = 0;
+        int DanioProvocado2 = 0;
         bool turno = true;
 
         var columnaInicial = Console.CursorLeft;
@@ -139,7 +232,7 @@ internal class Program
             //comienza la batalla
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine($"\t\t{Personaje1.Nombre} |vs| {Personaje2.Nombre}\n");
+            Console.WriteLine($"\t\t( {Personaje1.Nombre} |vs| {Personaje2.Nombre} )\n");
             Console.ResetColor();
             int filaInformacion = Console.CursorTop;
             while (Personaje1.Salud > 0 && Personaje2.Salud > 0)
@@ -155,27 +248,29 @@ internal class Program
                     DanioProvocado1 = Ataque(Personaje2, Personaje1); //viceverza
                     turno = true;
                 }
-                Console.SetCursorPosition(columnaInicial,Console.CursorTop);
-                Console.Write($"\t| Salud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% | ==== | Daño P1 {DanioProvocado1}% - Daño P2 {DanioProvocado2}% |".PadRight(70));
-                Thread.Sleep(150);
+                Console.SetCursorPosition(columnaInicial, Console.CursorTop);
+                Console.Write("\u001b[38;2;173;255;47m{0}\u001b[0m", $"\t| Salud P1 {Personaje1.Salud}% - Salud P2 {Personaje2.Salud}% | ==== | Daño P1 {DanioProvocado1}% - Daño P2 {DanioProvocado2}% |".PadRight(70));
+                Thread.Sleep(250);
             }
             Recompenza_IdEliminados(Personaje1, Personaje2, IDsPersonajeEliminar);
             Console.ReadKey();
         }
 
         EliminacionPersonajes(ListaPersonajes, IDsPersonajeEliminar);
+        if (ListaPersonajes.Count != 1) Console.WriteLine("\t\nPERSONAJES QUE PASAN A LA SIGUIENTE RONDA\n");
         MostrarGanadores(ListaPersonajes);
 
     }
 
     private static void MostrarGanadores(List<Personaje> ListaPersonajes)
     {
-        if (ListaPersonajes.Count != 1) Console.WriteLine("\t\nPERSONAJES QUE PASAN A LA SIGUIENTE RONDA\n");
+        int i = 0;
         foreach (var personaje in ListaPersonajes)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            if (ListaPersonajes.Count != 1) Console.WriteLine("\t" + personaje.Nombre + " - salud " + personaje.Salud + "%");
+            if (ListaPersonajes.Count != 1) Console.WriteLine("\t" + $"({i}) " + personaje.Nombre + " - salud " + personaje.Salud + "%");
             Console.ResetColor();
+            i++;
         }
     }
 
@@ -209,6 +304,7 @@ internal class Program
     private static void MostrarPersonajes(List<Personaje> ListaPersonaje)
     {
 
+        Console.WriteLine("\u001b[38;2;173;255;47m{0}\u001b[0m", "\tLista de Personajes");
         foreach (var personaje in ListaPersonaje)
         {
             Console.WriteLine("Nombre: " + personaje.Nombre);
@@ -224,6 +320,9 @@ internal class Program
             Console.WriteLine("Velocidad: " + personaje.Velocidad + "\n");
 
         }
+        Console.WriteLine("Teclea para salir");
+        Console.ReadKey();
+        Console.Clear();
     }
     private static int Ataque(Personaje PersonajeEnAtaque, Personaje PersonajeEnDefensa)
     {
