@@ -33,7 +33,24 @@ namespace Jugadores
         public string? Tipo { get => tipo; set => tipo = value; }
         public int Nivel { get => nivel; set => nivel = value; }
         public int Id { get => id; set => id = value; }
+
+        public void EstadisticasPersonaje()
+        {
+            string fechaFormateada = FechaNac.ToString("dd MMMM yyyy");
+            Console.WriteLine("\tApodo: " + Apodo);
+            Console.WriteLine("\tEdad: " + Edad);
+            Console.WriteLine("\tFecha de nacimiento: " + fechaFormateada);
+            Console.WriteLine("\tTipo: " + Tipo);
+            Console.WriteLine("\tDestreza: " + Destreza);
+            Console.WriteLine("\tArmadura: " + Armadura);
+            Console.WriteLine("\tNivel: " + Nivel);
+            Console.WriteLine("\tSalud: " + Salud);
+            Console.WriteLine("\tFuerza: " + Fuerza);
+            Console.WriteLine("\tVelocidad: " + Velocidad +"\n");
+        }
     }
+
+   
 
 
 }
