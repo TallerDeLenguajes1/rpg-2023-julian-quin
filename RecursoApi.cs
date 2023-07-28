@@ -1,8 +1,8 @@
 using System.IO;
 using System.Net; //para api
 using System.Text.Json;
-using Api;
-namespace HelperApi
+using EspacioClaseApi;
+namespace EspacioHelperApi
 {
     class RecursoApiWeb
     {
