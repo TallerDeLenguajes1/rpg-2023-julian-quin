@@ -1,12 +1,10 @@
-//Genere una clase para poder crear personajes aleatorios que se llame facrica de personajes
-//Debe tener un método que retorne un personaje con sus respetivos datos y características cargadas.
-using Jugadores;
-using Api;
-namespace Fabrica
+using EspacioPersonaje;
+using EspacioClaseApi;
+namespace EspacioFabrica
 {
     public static class FabricaDePersonajes
     {
-        public static Personaje crearPersonaje(string? nombre, int id, string apodo) //metodo
+        public static Personaje crearPersonaje(string nombre, int id, string apodo) //metodo
 
         {
             var NuevoPersonaje = new Personaje();
@@ -55,12 +53,12 @@ namespace Fabrica
             return Tipo;
         }
 
-        public static int NumeroAleatorio(int a, int b) //metodo
+        public static int NumeroAleatorio(int a, int b) 
         {
             Random ValorAletorio = new Random();
             return (ValorAletorio.Next(a,b));
         }
-        public static int edad (int AnioNacimiento)
+        private static int edad (int AnioNacimiento)
         {
             int anioActual = DateTime.Now.Year;
 
