@@ -1,4 +1,4 @@
-namespace Jugadores
+namespace EspacioPersonaje
 {
     public class Personaje
     {
@@ -6,7 +6,7 @@ namespace Jugadores
         // datos
         private string? nombre;
         private string? tipo;
-        private int id ;
+        private int id ; //esto añado yo!
         private DateTime fechaNac;
         private string? apodo;
         private int edad; //entre 0 y 300
